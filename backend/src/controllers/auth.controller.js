@@ -4,6 +4,8 @@ const User = require("../models/User.js");
 const { generateJWT } = require("../utils/jwtUtils.js");
 const asyncWrapper = require("../middlewares/asyncWrapper.js");
 const httpStatusText = require("../utils/httpsStatusText.js");
+const LoginAttempt = require("../models/LoginAttempt.js");
+
 const { hashPassword, verifyPassword } = require("../utils/passwordUtils.js");
 
 const signup = asyncWrapper(async (req, res) => {
@@ -34,10 +36,13 @@ const signup = asyncWrapper(async (req, res) => {
     password: hashedPassword,
   });
 
-  const token = await generateJWT({
-    id: newUser._id,
-    email: newUser.email,
-  });
+  const token = await generateJWT(
+    {
+      id: newUser._id,
+      email: newUser.email,
+    },
+    res
+  );
 
   res.status(201).json({
     status: httpStatusText.SUCCESS,
@@ -54,8 +59,6 @@ const signup = asyncWrapper(async (req, res) => {
     },
   });
 });
-
-const LoginAttempt = require("../models/LoginAttempt.js");
 
 const login = asyncWrapper(async (req, res) => {
   const { email, password } = req.body;
@@ -99,7 +102,7 @@ const login = asyncWrapper(async (req, res) => {
     process.env.JWT_REFRESH_EXPIRES
   );*/
 
-  const token = await generateJWT({ id: user._id, email: user.email });
+  const token = await generateJWT({ id: user._id, email: user.email }, res);
 
   console.log(
     `[LOGIN] user ${user.email} logged in at ${new Date().toISOString()}`

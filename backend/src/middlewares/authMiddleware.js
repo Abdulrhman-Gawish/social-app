@@ -1,18 +1,20 @@
-// middlewares/authMiddleware.js
 const httpStatusText = require("../utils/httpsStatusText.js");
 const { verifyJWT } = require("../utils/jwtUtils.js");
 
 const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  let token = req.cookies?.token;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!token && req.headers.authorization?.startsWith("Bearer ")) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+
+  if (!token) {
     return res.status(401).json({
       status: httpStatusText.FAILED,
       data: { message: "No token provided" },
     });
   }
 
-  const token = authHeader.split(" ")[1];
   const decoded = verifyJWT(token);
 
   if (!decoded) {

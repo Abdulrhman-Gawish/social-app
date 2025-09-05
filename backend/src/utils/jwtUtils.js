@@ -1,8 +1,15 @@
-// utils/jwtUtils.js
 const jwt = require("jsonwebtoken");
 
-const generateJWT = (payload, expiresIn = "1h") => {
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });
+const generateJWT = (payload, res) => {
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+  if (res) {
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000,
+    });
+  }
+  return token;
 };
 
 const verifyJWT = (token) => {
