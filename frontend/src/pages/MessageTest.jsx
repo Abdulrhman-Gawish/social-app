@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "@api/axios";
 
-
 function MessageTest() {
   const [message, setMessage] = useState("Loading...");
   const [error, setError] = useState(null);
@@ -10,7 +9,7 @@ function MessageTest() {
     const getMessage = async () => {
       try {
         const response = await api.get("/");
-        setMessage(response.data); 
+        setMessage(response.data);
       } catch (err) {
         console.error(err);
         setError("Failed to fetch message");
