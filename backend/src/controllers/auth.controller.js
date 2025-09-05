@@ -61,8 +61,8 @@ const signup = asyncWrapper(async (req, res) => {
 });
 
 const login = asyncWrapper(async (req, res) => {
-  const { email, password } = req.body;
-
+  const { email, password, rememberMe } = req.body;
+  console.log("RememberMe:", req.body.rememberMe);
   if (!email || !password) {
     return res.status(400).json({
       status: httpStatusText.FAILED,
@@ -102,7 +102,11 @@ const login = asyncWrapper(async (req, res) => {
     process.env.JWT_REFRESH_EXPIRES
   );*/
 
-  const token = await generateJWT({ id: user._id, email: user.email }, res);
+  const token = await generateJWT(
+    { id: user._id, email: user.email },
+    res,
+    rememberMe
+  );
 
   console.log(
     `[LOGIN] user ${user.email} logged in at ${new Date().toISOString()}`

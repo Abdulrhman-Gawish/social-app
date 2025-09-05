@@ -8,6 +8,7 @@ function Login() {
       const response = await api.post("auth/login", {
         email: values.email,
         password: values.password,
+        rememberMe: values.remember,
       });
       console.log("Login successful: ", response.data);
     } catch (e) {

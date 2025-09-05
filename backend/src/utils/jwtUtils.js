@@ -1,12 +1,14 @@
 const jwt = require("jsonwebtoken");
 
-const generateJWT = (payload, res) => {
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+const generateJWT = (payload, res, rememberMe) => {
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: rememberMe ? "1d" : "1h",
+  });
 
   if (res) {
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 60 * 60 * 1000,
+      maxAge: rememberMe ? 24 * 60 * 60 * 1000 : 60 * 60 * 1000,
     });
   }
   return token;
