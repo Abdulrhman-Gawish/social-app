@@ -1,8 +1,9 @@
 import { Form, Input, Button, Card, Checkbox } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../api/axios";
 
 function Login() {
+  const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
       const response = await api.post("auth/login", {
@@ -11,6 +12,7 @@ function Login() {
         rememberMe: values.remember,
       });
       console.log("Login successful: ", response.data);
+      navigate("/home");
     } catch (e) {
       console.log("Login failed: ", e.response?.data || e.message);
     }

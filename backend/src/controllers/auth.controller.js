@@ -125,4 +125,13 @@ const login = asyncWrapper(async (req, res) => {
   });
 });
 
-module.exports = { signup, login };
+const logout = (req, res) => {
+  res.clearCookie("token");
+
+  res.status(200).json({
+    status: "SUCCESS",
+    data: { message: "Logged out successfully" },
+  });
+};
+
+module.exports = { signup, login, logout };

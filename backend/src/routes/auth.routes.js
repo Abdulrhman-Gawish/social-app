@@ -1,6 +1,6 @@
 // routes/auth.routes.js
 const express = require("express");
-const { signup, login } = require("../controllers/auth.controller.js");
+const { signup, login, logout } = require("../controllers/auth.controller.js");
 const authMiddleware = require("../middlewares/authMiddleware.js");
 
 const router = express.Router();
@@ -8,5 +8,5 @@ const router = express.Router();
 // POST /api/v1/auth/signup
 router.post("/signup", signup);
 router.post("/login", login);
-
+router.post("/logout", logout);
 module.exports = router;
