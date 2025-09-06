@@ -9,7 +9,8 @@ const mediaSchema = new Schema(
     width: { type: Number },
     height: { type: Number },
   },
-  { _id: false } 
+  { _id: false }
+);
 
 const messageSchema = new Schema(
   {
